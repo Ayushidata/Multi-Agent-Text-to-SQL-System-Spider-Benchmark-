@@ -1,9 +1,13 @@
 # Multi-Agent-Text-to-SQL-System-Spider-Benchmark-
 
-Multi-Agent Text-to-SQL System
-Spider Benchmark · Groq-powered · 4-Agent Pipeline
+# Multi-Agent Text-to-SQL System
+### Spider Benchmark · Groq-powered · 4-Agent Pipeline
 
-Architecture
+---
+
+## Architecture
+
+```
 Natural Language Question
          │
          ▼
@@ -29,29 +33,67 @@ Natural Language Question
 │ Agent 4         │  → Validated + Corrected Final SQL
 │ SQL Validator   │
 └─────────────────┘
+```
 
-Setup
-1. Install dependencies
-bashpip install -r requirements.txt
-2. Configure .env
-bashcp .env .env.local   # optional backup
-Edit .env and add your Groq API key:
+---
+
+## Setup
+
+### 1. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configure .env
+```bash
+cp .env .env.local   # optional backup
+```
+
+Edit `.env` and add your Groq API key:
+```
 GROQ_API_KEY=gsk_your_actual_key_here
+```
+
 Get your free key at: https://console.groq.com
-3. Run
-Interactive mode:
-bashpython main.py
-Single query:
-bashpython main.py --schema concert_singer --query "How many singers are there?"
-Batch mode (all sample queries for a schema):
-bashpython main.py --schema world_1 --batch
-Batch all schemas:
-bashpython main.py --batch
 
-Available Schemas (Spider Benchmark)
-SchemaDescriptionTablesconcert_singerConcerts, singers, stadiums4employee_hire_evaluationHR & hiring4world_1Countries, cities, languages3student_transcriptsStudents, courses, grades8
+### 3. Run
 
-Project Structure
+**Interactive mode:**
+```bash
+python main.py
+```
+
+**Single query:**
+```bash
+python main.py --schema concert_singer --query "How many singers are there?"
+```
+
+**Batch mode (all sample queries for a schema):**
+```bash
+python main.py --schema world_1 --batch
+```
+
+**Batch all schemas:**
+```bash
+python main.py --batch
+```
+
+---
+
+## Available Schemas (Spider Benchmark)
+
+| Schema | Description | Tables |
+|--------|-------------|--------|
+| `concert_singer` | Concerts, singers, stadiums | 4 |
+| `employee_hire_evaluation` | HR & hiring | 4 |
+| `world_1` | Countries, cities, languages | 3 |
+| `student_transcripts` | Students, courses, grades | 8 |
+
+---
+
+## Project Structure
+
+```
 text2sql/
 ├── .env                        # API keys (DO NOT commit)
 ├── main.py                     # Entry point + pipeline orchestrator
@@ -67,14 +109,28 @@ text2sql/
 ├── utils/
 │   └── groq_client.py          # Groq API wrapper
 └── outputs/                    # Auto-created, stores JSON results
+```
 
-Groq Models
-Set GROQ_MODEL in .env:
-ModelSpeedQualityllama3-70b-8192FastBest (recommended)llama3-8b-8192Ultra-fastGoodmixtral-8x7b-32768FastGood, longer contextgemma2-9b-itFastGood
+---
 
-Output
-Each run saves a JSON file in ./outputs/:
-json{
+## Groq Models
+
+Set `GROQ_MODEL` in `.env`:
+
+| Model | Speed | Quality |
+|-------|-------|---------|
+| `llama3-70b-8192` | Fast | Best (recommended) |
+| `llama3-8b-8192` | Ultra-fast | Good |
+| `mixtral-8x7b-32768` | Fast | Good, longer context |
+| `gemma2-9b-it` | Fast | Good |
+
+---
+
+## Output
+
+Each run saves a JSON file in `./outputs/`:
+```json
+{
   "question": "How many singers are there?",
   "schema": "concert_singer",
   "final_sql": "SELECT count(*) FROM singer",
@@ -83,3 +139,4 @@ json{
   "elapsed": 3.2,
   "agents": { ... }
 }
+```
